@@ -1,0 +1,116 @@
+\documentclass[final]{beamer}  \mode<presentation> { 
+    \usetheme{LHCB}
+  }
+  
+  \usepackage{csquotes}
+  \usepackage[english]{babel}
+  \usepackage[latin1]{inputenc}
+  \usepackage{amsmath,amsthm, amssymb, latexsym}
+  \usepackage{pgfplots}
+  \usepackage{tikzscale}
+  \usefonttheme[onlymath]{serif}
+  \boldmath
+  \usepackage[orientation=portrait,size=a0,scale=1.4,debug]{beamerposter}
+  \title[Dibrocop]{Towards generic volunteer computing platform}
+  \author[Nikitin]{Konstantin Nikitin, Andrey Ustyuzhanin, Alexander Baranov}
+  \begin{document}
+  \begin{frame}
+    \begin{columns}
+      \begin{column}{.49\textwidth}
+        \begin{beamercolorbox}[center,wd=\textwidth]{postercolumn}
+        \begin{minipage}[T]{.95\textwidth}  % tweaks the width, makes a new \textwidth
+        \begin{block}{Preface}
+          Skygrid (Docker\footnote{https://www.docker.io} + Apache YARN\footnote{http://hadoop.apache.org/docs/r2.6.0/hadoop-yarn/hadoop-yarn-site/YARN.html}):
+          
+          \begin{itemize}
+            \item High level of hardware and software abstraction,
+            \item Run tasks with conflicting requirements in parallel on the same host,
+            \item Quite no requirements to host machine.
+          \end{itemize}
+          
+          \vskip2ex
+          JavaScript~--- virtualisation without installation and side effects. Language interpreters evolved very much lately.
+          
+          Resouce and scope management are performed by web-browser, what is good at it.
+        \end{block}
+        \vskip5ex
+        \begin{block}{Project Description}
+          \enquote{DiBroCop is a~project for~computation unit utilisation by~tasks which are~executed within a~web-browser.}
+        \end{block}
+        \vskip5ex
+        \begin{block}{Code reuse}
+          Backward compatibility is one of the most important features, \textit{eg.} C $\to$ C++, LAMP $\to$ AWS, etc.
+          \vskip2ex
+          Fortunately, code reuse it not a problem for DiBroCop:
+          \begin{itemize}
+            \item LLVM\footnote{http://llvm.org/} = Set of compilers + well defined intermediate representation (IR)
+            \item Emscripten\footnote{http://kripken.github.io/emscripten-site/}: LLVM IR is interpreted by JavaScript.
+          \end{itemize}
+          \vskip2ex
+          So, quite every program or library, which is not heavy dependent from~OS~internals could be~run on~JavaScript.
+        \end{block}
+        \vskip5ex
+        \begin{block}{Next steps}
+          \begin{itemize}
+            \item Integration with Skygrid (as a worker),
+            \item Packing more applications and libraries,
+            \item Docker-in-browser via linux-in-js\footnote{http://bellard.org/jslinux/},
+            \item Try PNaCl\footnote{http://nativeclient.googlecode.com/svn/data/site/pnacl.pdf}, Silverlight\footnote{http://www.microsoft.com/SilverLight/} as another (but platform-specific) task runners. Generalization of all approaches.
+                        \item Run several tasks in parallel, using WebWorkers\footnote{https://developer.mozilla.org/en-US/docs/Web/API/Web\_Workers\_API/Using\_web\_workers}.
+          \end{itemize}
+          \vskip2ex
+          As a result we are going to create in-browser competitor to seti@home, but 
+          \begin{itemize}
+            \item Available for all platforms, for all kinds of architectures,
+            \item Easy to participate, just by opening a web page.
+          \end{itemize}
+        \end{block}
+        \end{minipage}
+        \end{beamercolorbox}
+      \end{column}
+      \begin{column}{.49\textwidth}
+        \begin{beamercolorbox}[center,wd=\textwidth]{postercolumn}
+          \begin{minipage}[T]{.95\textwidth}  % tweaks the width, makes a new \textwidth
+            \vfill
+            \begin{block}{Pythia}
+              Library for Monte-Carlo event generation. Written on C++.
+              
+              A few patches was done to compile it with Emscripten (working with files and native exceptions).
+
+              \LARGE{https://xni.github.io/pythia/main01.html}
+              \vskip2em
+              \begin{center}
+              \includegraphics[width=.4\linewidth]{figures/try-pythia}
+              \end{center}
+            \end{block}
+            \vskip5ex
+            \begin{block}{Speed tests}
+\begin{figure}
+    \centering
+    \resizebox{0.85\textwidth}{!}{
+    
+\begin{tikzpicture}
+\tikzstyle{every node}=[font=\tiny]
+\begin{axis}[
+    ybar,
+    ylabel={\#Events per second},
+    ylabel near ticks,
+    symbolic x coords={Native,FireFox36,Safari,Chromium43, iPadMini2},
+    xtick=data,
+    x tick label style={rotate=45,anchor=east},
+    ]
+\addplot coordinates {(Native,29) (FireFox36,10) (Safari,1.8) (Chromium43,1.7) (iPadMini2,0.28)};
+\end{axis}
+\end{tikzpicture}
+
+}
+\end{figure}
+
+            \end{block}
+            \vfill
+            \end{minipage}
+          \end{beamercolorbox}
+        \end{column}
+    \end{columns}
+  \end{frame}
+  \end{document}
